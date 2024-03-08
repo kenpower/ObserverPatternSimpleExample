@@ -4,6 +4,7 @@
 #include <iostream>
 #include<vector>
 #include <map>
+#include <functional>
 #include <windows.h>
 using namespace std;
 
@@ -38,17 +39,17 @@ public:
 };
 
 class InputChecker : public Subject{
-	map<UINT, Command> keyCodeCommandMap = {
-		{VK_LEFT, Command::MOVE_LEFT},
-		{VK_UP, Command::MOVE_UP},
-		{VK_RIGHT, Command::MOVE_RIGHT},
-		{VK_DOWN, Command::MOVE_DOWN},
-		{'A', Command::MOVE_LEFT},
-		{'S', Command::MOVE_DOWN},
-		{'D', Command::MOVE_RIGHT},
-		{'W', Command::MOVE_UP},
-		{VK_SPACE, Command::FIRE}
-		};
+	map<int, Command> keyCodeCommandMap = {
+		{VK_LEFT,	MOVE_LEFT},
+		{VK_UP,		MOVE_UP},
+		{VK_RIGHT,	MOVE_RIGHT},
+		{VK_DOWN,	MOVE_DOWN},
+		{'A',		MOVE_LEFT},
+		{'S',		MOVE_DOWN},
+		{'D',		MOVE_RIGHT},
+		{'W',		MOVE_UP},
+		{VK_SPACE,	FIRE}
+	};
 public:
 	void getInput() {
 		for (auto key_command : keyCodeCommandMap) {
@@ -64,7 +65,7 @@ class Score : public Observer {
     int score = 0;
 	int level = 1;
 public:
-    void update(Command _) override {
+    void update(Command _) override { // "_" means we are not using the parameter
         score += 1; 
 		if(score%10==0)
 			cout << "Level: " << level++ << endl;
@@ -79,7 +80,7 @@ class AudioSystem : public Observer {
 		int duration = 25; // Duration of each beep in milliseconds
 
 		// Increase the frequency with each beep to create a "power-up" effect
-		for (int frequency = startFrequency; frequency <= endFrequency; frequency *=1.2) {
+		for (int frequency = startFrequency; frequency <= endFrequency; frequency *= 1.2) {
 			Beep(frequency, duration);
 		}
 	}
@@ -111,6 +112,7 @@ public:
 		}
 		cout << "Mario has moved to position: " << posx << ", " << posy << endl;
 	}
+
 };
 
 int main() {
