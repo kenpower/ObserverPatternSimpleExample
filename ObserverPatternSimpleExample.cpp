@@ -1,5 +1,7 @@
 // ObserverPatternSimpleExample.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
+//Note about compiler: This code uses C++17 features, so you need to compile it with a C++17 compliant compiler.
+//in Visual Studio 2019, you can set the C++ version in the project properties, under C/C++ -> Language -> C++ Language Standard -> (ISO C++20 Standard (/std:c++20))
 
 #include <iostream>
 #include<vector>
@@ -52,9 +54,9 @@ class InputChecker : public Subject{
 	};
 public:
 	void getInput() {
-		for (auto key_command : keyCodeCommandMap) {
-			if (GetAsyncKeyState(key_command.first)<0) {
-				notifyAll(key_command.second);
+		for (auto [key, command] : keyCodeCommandMap) { // [key, command] if you have a error here see note about compiler at top of the file
+			if (GetAsyncKeyState(key)<0) { // negative number means the key is pressed (don't ask!)
+				notifyAll(command);
 			}
 		}
 
